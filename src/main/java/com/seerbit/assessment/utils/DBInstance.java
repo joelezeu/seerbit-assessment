@@ -8,7 +8,7 @@ public class DBInstance {
 
     public static ConcurrentMap getDBInstance() {
         if (concurrentMap == null) {
-            concurrentMap = new ConcurrentHashMap<>();
+            concurrentMap = new ConcurrentHashMap<Long, Double>();
         }
         return concurrentMap;
     }
