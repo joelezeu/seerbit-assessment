@@ -49,6 +49,11 @@ public class StatisticService {
         return ResponseEntity.ok(statistics);
     }
 
+    public ResponseEntity<?> delete() {
+        DBInstance.getDBInstance().clear();
+        return ResponseEntity.status(204).build();
+    }
+
     private double roundUp(double input) {
         return new BigDecimal(input).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }

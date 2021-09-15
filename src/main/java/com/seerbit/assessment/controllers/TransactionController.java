@@ -5,10 +5,7 @@ import com.seerbit.assessment.services.StatisticService;
 import com.seerbit.assessment.services.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -27,5 +24,10 @@ public class TransactionController {
     @GetMapping("/statistics")
     public ResponseEntity<?> getStatistics() {
         return statisticService.calculateStats();
+    }
+
+    @DeleteMapping("/transaction")
+    public ResponseEntity<?> delete() {
+        return statisticService.delete();
     }
 }
