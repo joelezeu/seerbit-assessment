@@ -4,11 +4,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class DBInstance {
-    private static ConcurrentMap concurrentMap = null;
+    private static ConcurrentMap<Long, Double> concurrentMap = null;
 
     public static ConcurrentMap getDBInstance() {
         if (concurrentMap == null) {
-            concurrentMap = new ConcurrentHashMap();
+            concurrentMap = new ConcurrentHashMap<>();
         }
         return concurrentMap;
     }
