@@ -2,21 +2,25 @@ package com.seerbit.assessment.services;
 
 import com.seerbit.assessment.domain.Statistics;
 import com.seerbit.assessment.utils.DBInstance;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
+@Slf4j
 @Service
 public class StatisticService {
-    private Statistics calculateStats(long oldestAcceptableTxnTime) {
+    public ResponseEntity<?> calculateStats() {
         ConcurrentMap<Long, Double> concurrentMap = DBInstance.getDBInstance();
         double min = 0, max = 0, sum = 0;
         long count = 0;
+
         for (Map.Entry<Long, Double> txn : concurrentMap.entrySet()) {
-            if (txn.getValue() < oldestAcceptableTxnTime) {
-                continue;
-            }
+
             double amount = txn.getValue();
             // min
             if (count == 0) {
@@ -37,10 +41,15 @@ public class StatisticService {
         Statistics statistics = new Statistics();
         statistics.setAvg(count == 0 ? 0 : sum / count);
         statistics.setCount(count);
-        statistics.setMax(max);
-        statistics.setSum(sum);
-        statistics.setMin(min);
+        statistics.setMax(roundUp(max));
+        statistics.setSum(roundUp(sum));
+        statistics.setMin(roundUp(min));
 
-        return statistics;
+
+        return ResponseEntity.ok(statistics);
+    }
+
+    private double roundUp(double input) {
+        return new BigDecimal(input).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 }
